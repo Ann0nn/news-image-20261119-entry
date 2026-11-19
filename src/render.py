@@ -112,8 +112,8 @@ def lead_story(pen):
         "The US, Chinese and Russian leaders held their first-ever "
         "three-way talks at the APEC summit in Shenzhen."
     )
-    lines = fit_lines(pen, standfirst, "sans", 20, 640)
-    put_lines(pen, 64, 306, lines, "sans", 20, SOFT, 26)
+    lines = fit_lines(pen, standfirst, "sans", 21, 660)
+    put_lines(pen, 64, 306, lines, "sans", 21, SOFT, 27)
     draw_world(pen, 890, 268, 60)
 
 

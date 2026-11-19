@@ -11,7 +11,7 @@
 //
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -26,9 +26,15 @@ if (!existsSync(source)) {
 mkdirSync(outDir, { recursive: true });
 
 const bytes = readFileSync(source);
-writeFileSync(dest, bytes);
-
 if (bytes.length === 0) {
   throw new Error('entry.png is empty, refusing to submit a blank image');
+}
+writeFileSync(dest, bytes);
+
+// Confirm the copy landed whole: the written file must match the source
+// byte for byte in size, or the gate would see a truncated image.
+const written = statSync(dest).size;
+if (written !== bytes.length) {
+  throw new Error(`short write: ${written} of ${bytes.length} bytes`);
 }
 console.log(`wrote ${dest} (${bytes.length} bytes)`);
