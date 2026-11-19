@@ -1,24 +1,34 @@
-// news-image-20261119 entry driver (Node 22, standard library only).
-// The entry image is the entry.png beside this file: a one-page newspaper
-// summary of the world news of Thursday 19 November 2026, drawn by
-// src/render.py from headlines researched that day. The program copies it
-// to /output/entry.png. A plain copy is deterministic: every run writes
-// the same bytes, as the competition requires.
+// news-image-20261119: entry driver, Node 22 standard library only.
+//
+// The entry is the newspaper front page in entry.png beside this file: it
+// sums up the world news of Thursday 19 November 2026 and was drawn by
+// src/render.py from headlines researched that day. This program reads the
+// image and writes it out to /output/entry.png. Reading a file and writing
+// it back byte for byte is deterministic, so repeated runs produce
+// identical output, exactly as the competition requires.
 //
 // Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
+//
 //   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 
-import { copyFileSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const repoDir = dirname(fileURLToPath(import.meta.url));
-const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const here = dirname(fileURLToPath(import.meta.url));
+const source = join(here, 'entry.png');
+const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const dest = join(outDir, 'entry.png');
 
-const target = join(outputDir, 'entry.png');
-copyFileSync(join(repoDir, 'entry.png'), target);
+if (!existsSync(source)) {
+  throw new Error(`entry image missing: ${source}`);
+}
+mkdirSync(outDir, { recursive: true });
 
-// Confirm the copy landed: a missing or empty output would fail the gate.
-const { size } = statSync(target);
-if (size === 0) throw new Error('entry.png copied but empty');
-console.log(`wrote ${target} (${size} bytes)`);
+const bytes = readFileSync(source);
+writeFileSync(dest, bytes);
+
+if (bytes.length === 0) {
+  throw new Error('entry.png is empty, refusing to submit a blank image');
+}
+console.log(`wrote ${dest} (${bytes.length} bytes)`);

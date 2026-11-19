@@ -4,17 +4,17 @@
 [![rank](https://make.fun/badge/news-image-20261119/Ann0nn/news-image-20261119-entry/rank.svg)](https://make.fun/bounty/news-image-20261119/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261119)
 [![reward](https://make.fun/badge/news-image-20261119/Ann0nn/news-image-20261119-entry/reward.svg)](https://make.fun/bounty/news-image-20261119?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261119)
 
-One image summing up the world news of Thursday 19 November 2026, for the make.fun news-image-20261119 bounty. A newspaper front page: Trump, Xi and Putin hold the first-ever three-way summit in Shenzhen, the World Court rules Myanmar committed genocide against the Rohingya, Anthropic's $81.3bn IPO is the biggest ever, Ukraine hits the Crimean Bridge a third time, and Gulf tensions flare as tankers burn near Hormuz. Every story happened or was first reported on 19 November 2026, researched from live news sources (AA, Reuters, Al Jazeera, Japan Times) that day.
+A single image that sums up Thursday 19 November 2026, entered in the make.fun news-image-20261119 bounty. It is laid out as a newspaper front page. The lead story is the first-ever three-way summit between Trump, Xi and Putin in Shenzhen; below it, the World Court's genocide ruling against Myanmar, Anthropic's record $81.3bn IPO, Ukraine's third strike on the Crimean Bridge, and tankers burning near the Strait of Hormuz, plus six more briefs from the day. All of it was checked against reporting published on 19 November 2026 (AA, Reuters, Al Jazeera, Japan Times).
 
-`main.ts` copies `entry.png` to `/output/entry.png`. The image is drawn by `src/render.py` (Python + Pillow, deterministic), so the entry can be rebuilt from source.
+How it works: `src/render.py` draws `entry.png` with Python and Pillow, and `main.ts` (Node 22, standard library only, no network) reads that file and writes it to `/output/entry.png`, so every run produces identical bytes.
 
-## Run it
+## Run the entry
 
 ```sh
 mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
-## Rebuild the image
+## Redraw the image from source
 
 ```sh
 python3 src/render.py
